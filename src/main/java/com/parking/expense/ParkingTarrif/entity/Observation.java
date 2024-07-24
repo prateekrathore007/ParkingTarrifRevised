@@ -9,6 +9,9 @@ import java.time.LocalDate;
 
 
 @Entity
+@Getter
+@Setter
+@EqualsAndHashCode
 public class Observation {
 
     @Id
@@ -18,35 +21,6 @@ public class Observation {
     private String licensePlate;
     private String streetName;
     private LocalDate dateOfObservation;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getLicensePlate() {
-        return licensePlate;
-    }
-
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
-    }
-
-    public LocalDate getDateOfObservation() {
-        return dateOfObservation;
-    }
-
-    public void setDateOfObservation(LocalDate dateOfObservation) {
-        this.dateOfObservation = dateOfObservation;
-    }
-
 
 }
 
