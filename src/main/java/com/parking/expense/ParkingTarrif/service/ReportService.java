@@ -29,7 +29,7 @@ public class ReportService {
                 .filter(observation -> parkingDurationRepository.findByLicensePlateAndEndTimeIsNull(observation.getLicensePlate()).isPresent())
                 .forEach(observation -> {
                     // Generate a report or take necessary action
-                    System.out.println("Unregistered plate: " + observation.getLicensePlate() +
+                    System.out.println("Parking Observed for Unregistered Car with License Plate: " + observation.getLicensePlate() +
                             " observed at " + observation.getStreetName() +
                             " on " + observation.getDateOfObservation());
                 });

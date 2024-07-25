@@ -47,7 +47,7 @@ public class ParkingService {
         long parkingTime = calculateChargedMinutes(duration.getStartTime(), duration.getEndTime());
 
         //getting parking pricing of Respective Streets
-        int pricePerMinute = streetPricing.getOrDefault(duration.getStreetName(), 0);
+        int pricePerMinute = streetPricing.get(duration.getStreetName());
 
         return parkingTime * pricePerMinute / 100.0;
     }
