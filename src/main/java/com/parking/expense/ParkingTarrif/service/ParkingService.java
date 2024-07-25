@@ -1,13 +1,14 @@
 package com.parking.expense.ParkingTarrif.service;
 
 import com.parking.expense.ParkingTarrif.entity.ParkingDuration;
+import com.parking.expense.ParkingTarrif.entity.StreetPricing;
 import com.parking.expense.ParkingTarrif.exception.ParkingDurationNotFoundException;
 import com.parking.expense.ParkingTarrif.repository.ParkingDurationRepository;
+import com.parking.expense.ParkingTarrif.repository.StreetPricingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
@@ -18,12 +19,10 @@ public class ParkingService {
     @Autowired
     private ParkingDurationRepository parkingDurationRepository;
 
-    private final Map<String, Integer> streetPricing = Map.of(
-            "Java", 15,
-            "Jakarta", 13,
-            "Spring", 10,
-            "Azure", 10
-    );
+    @Autowired
+    private StreetPricingRepository streetPricingRepository;
+
+
 
     public ParkingDuration startParking(String licensePlate, String streetName) {
         ParkingDuration duration= new ParkingDuration();
@@ -47,7 +46,11 @@ public class ParkingService {
         long parkingTime = calculateChargedMinutes(duration.getStartTime(), duration.getEndTime());
 
         //getting parking pricing of Respective Streets
-        int pricePerMinute = streetPricing.get(duration.getStreetName());
+        Optional<StreetPricing>streetPricing= streetPricingRepository.findByStreetName(duration.getStreetName());
+        if(streetPricing.isEmpty()){
+            throw new IllegalStateException(" Pricing Not Found for given Street Name "+duration.getStreetName());
+        }
+        int pricePerMinute = streetPricing.get().getStreetPricing();
 
         return parkingTime * pricePerMinute / 100.0;
     }

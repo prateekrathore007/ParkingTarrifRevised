@@ -3,14 +3,15 @@ package com.parking.expense.ParkingTarrif.service;
 
 
 import com.parking.expense.ParkingTarrif.entity.ParkingDuration;
+import com.parking.expense.ParkingTarrif.entity.StreetPricing;
 import com.parking.expense.ParkingTarrif.exception.ParkingDurationNotFoundException;
 import com.parking.expense.ParkingTarrif.repository.ParkingDurationRepository;
+import com.parking.expense.ParkingTarrif.repository.StreetPricingRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -26,6 +27,9 @@ class ParkingServiceTest {
 
     @Mock
     private ParkingDurationRepository parkingDurationRepository;
+
+    @Mock
+    private StreetPricingRepository streetPricingRepository;
 
     @BeforeEach
     void setUp() {
@@ -51,12 +55,17 @@ class ParkingServiceTest {
     @Test
     void testEndParking() {
         ParkingDuration duration = new ParkingDuration();
+
         duration.setLicensePlate("ABC123");
         duration.setStreetName("Java");
         duration.setStartTime(LocalDateTime.of(2024, 7, 18, 14, 0));
         duration.setEndTime(null);
+        StreetPricing streetPricing= new StreetPricing();
+        streetPricing.setStreetPricing(10);
+        streetPricing.setStreetName("Java");
 
         when(parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("ABC123")).thenReturn(Optional.of(duration));
+        when(streetPricingRepository.findByStreetName("Java")).thenReturn(Optional.of(streetPricing));
         when(parkingDurationRepository.save(any(ParkingDuration.class))).thenReturn(duration);
 
         double amount = parkingService.endParking("ABC123");
@@ -70,6 +79,20 @@ class ParkingServiceTest {
         when(parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("ABC123")).thenReturn(Optional.empty());
 
         assertThrows(ParkingDurationNotFoundException.class, () -> parkingService.endParking("ABC123"));
+    }
+
+    @Test
+    void testStreetPricing_NotFound(){
+        ParkingDuration duration = new ParkingDuration();
+
+        duration.setLicensePlate("ABC123");
+        duration.setStreetName("Java");
+        duration.setStartTime(LocalDateTime.of(2024, 7, 18, 14, 0));
+        duration.setEndTime(null);
+        when(parkingDurationRepository.save(any(ParkingDuration.class))).thenReturn(duration);
+        when(parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("ABC123")).thenReturn(Optional.of(duration));
+        when(streetPricingRepository.findByStreetName("ABC123")).thenReturn(Optional.empty());
+        assertThrows(IllegalStateException.class, ()->parkingService.endParking("ABC123"));
     }
 
     @Test
