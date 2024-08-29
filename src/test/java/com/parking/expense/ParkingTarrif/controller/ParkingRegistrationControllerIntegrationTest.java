@@ -29,24 +29,24 @@ public class ParkingRegistrationControllerIntegrationTest {
     @Test
     void testStartParking() throws Exception {
         mockMvc.perform(post("/api/parking/start")
-                        .param("licensePlate", "XYZ123")
+                        .param("licensePlate", "AB-ZK-BL")
                         .param("streetName", "Spring")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.licensePlate").value("XYZ123"))
+                .andExpect(jsonPath("$.licensePlate").value("AB-ZK-BL"))
                 .andExpect(jsonPath("$.streetName").value("Spring"));
     }
 
     @Test
     void testEndParking() throws Exception {
         ParkingDuration duration = new ParkingDuration();
-        duration.setLicensePlate("XYZ123");
+        duration.setLicensePlate("AB-ZK-BL");
         duration.setStreetName("Spring");
         duration.setStartTime(LocalDateTime.now());
         parkingDurationRepository.save(duration);
 
         mockMvc.perform(post("/api/parking/end")
-                        .param("licensePlate", "XYZ123")
+                        .param("licensePlate", "AB-ZK-BL")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

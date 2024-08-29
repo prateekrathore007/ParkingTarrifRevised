@@ -21,14 +21,14 @@ class ParkingSessionRepositoryTest {
     @Test
     void testFindByLicensePlateAndEndTimeIsNull() {
         ParkingDuration session = new ParkingDuration();
-        session.setLicensePlate("ABC123");
+        session.setLicensePlate("AB-ZK-BL");
         session.setStreetName("Java");
         session.setStartTime(LocalDateTime.now());
         parkingDurationRepository.save(session);
 
-        Optional<ParkingDuration> foundSession = parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("ABC123");
+        Optional<ParkingDuration> foundSession = parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("AB-ZK-BL");
 
         assertTrue(foundSession.isPresent());
-        assertEquals("ABC123", foundSession.get().getLicensePlate());
+        assertEquals("AB-ZK-BL", foundSession.get().getLicensePlate());
     }
 }

@@ -44,20 +44,20 @@ class ReportServiceTest {
     @Test
     void testGenerateReport() {
         Observation observation1 = new Observation();
-        observation1.setLicensePlate("ABC123");
+        observation1.setLicensePlate("AA-ZK-BL");
         observation1.setStreetName("Java");
         observation1.setDateOfObservation(LocalDate.of(2024, 7, 19));
 
         Observation observation2 = new Observation();
-        observation2.setLicensePlate("XYZ456");
+        observation2.setLicensePlate("AB-ZK-BL");
         observation2.setStreetName("Spring");
         observation2.setDateOfObservation(LocalDate.of(2024, 7, 19));
         List<Observation> observations= new ArrayList<>();
         observations.add(observation1);
         observations.add(observation2);
         when(observationRepository.findAll()).thenReturn(Arrays.asList(observation1, observation2));
-        when(sessionRepository.findByLicensePlateAndEndTimeIsNull("ABC123")).thenReturn(Optional.of(new ParkingDuration()));
-        when(sessionRepository.findByLicensePlateAndEndTimeIsNull("XYZ456")).thenReturn(Optional.of(new ParkingDuration()));
+        when(sessionRepository.findByLicensePlateAndEndTimeIsNull("AA-ZK-BL")).thenReturn(Optional.of(new ParkingDuration()));
+        when(sessionRepository.findByLicensePlateAndEndTimeIsNull("AB-ZK-BL")).thenReturn(Optional.of(new ParkingDuration()));
 
        reportService.generateReport();
 

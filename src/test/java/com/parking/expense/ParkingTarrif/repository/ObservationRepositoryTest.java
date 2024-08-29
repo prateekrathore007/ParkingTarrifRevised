@@ -20,7 +20,7 @@ class ObservationRepositoryTest {
     @Test
     void testSaveAndFind() {
         Observation observation = new Observation();
-        observation.setLicensePlate("DEF456");
+        observation.setLicensePlate("AB-ZK-BL");
         observation.setStreetName("Spring");
         observation.setDateOfObservation(LocalDate.of(2024, 7, 18));
         observationRepository.save(observation);
@@ -28,7 +28,7 @@ class ObservationRepositoryTest {
         Observation foundObservation = observationRepository.findById(observation.getId()).orElse(null);
 
         assertNotNull(foundObservation);
-        assertEquals("DEF456", foundObservation.getLicensePlate());
+        assertEquals("AB-ZK-BL", foundObservation.getLicensePlate());
         assertEquals("Spring", foundObservation.getStreetName());
     }
 }

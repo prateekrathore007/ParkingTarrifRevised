@@ -39,16 +39,16 @@ class ParkingServiceTest {
     @Test
     void testStartParking() {
         ParkingDuration duration = new ParkingDuration();
-        duration.setLicensePlate("ABC123");
+        duration.setLicensePlate("AA-ZK-BL");
         duration.setStreetName("Java");
         duration.setStartTime(LocalDateTime.now());
 
         when(parkingDurationRepository.save(any(ParkingDuration.class))).thenReturn(duration);
 
-        ParkingDuration createdSession = parkingService.startParking("ABC123", "Java");
+        ParkingDuration createdSession = parkingService.startParking("AA-ZK-BL", "Java");
 
         assertNotNull(createdSession);
-        assertEquals("ABC123", createdSession.getLicensePlate());
+        assertEquals("AA-ZK-BL", createdSession.getLicensePlate());
         assertEquals("Java", createdSession.getStreetName());
     }
 
@@ -56,7 +56,7 @@ class ParkingServiceTest {
     void testEndParking() {
         ParkingDuration duration = new ParkingDuration();
 
-        duration.setLicensePlate("ABC123");
+        duration.setLicensePlate("AA-ZK-BL");
         duration.setStreetName("Java");
         duration.setStartTime(LocalDateTime.of(2024, 7, 18, 14, 0));
         duration.setEndTime(null);
@@ -64,11 +64,11 @@ class ParkingServiceTest {
         streetPricing.setStreetPricing(10);
         streetPricing.setStreetName("Java");
 
-        when(parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("ABC123")).thenReturn(Optional.of(duration));
+        when(parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("AA-ZK-BL")).thenReturn(Optional.of(duration));
         when(streetPricingRepository.findByStreetName("Java")).thenReturn(Optional.of(streetPricing));
         when(parkingDurationRepository.save(any(ParkingDuration.class))).thenReturn(duration);
 
-        double amount = parkingService.endParking("ABC123");
+        double amount = parkingService.endParking("AA-ZK-BL");
 
         assertTrue(amount > 0);
         assertNotNull(duration.getEndTime());
@@ -76,23 +76,23 @@ class ParkingServiceTest {
 
     @Test
     void testEndParking_NotFound() {
-        when(parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("ABC123")).thenReturn(Optional.empty());
+        when(parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("AA-ZK-BL")).thenReturn(Optional.empty());
 
-        assertThrows(ParkingDurationNotFoundException.class, () -> parkingService.endParking("ABC123"));
+        assertThrows(ParkingDurationNotFoundException.class, () -> parkingService.endParking("AA-ZK-BL"));
     }
 
     @Test
     void testStreetPricing_NotFound(){
         ParkingDuration duration = new ParkingDuration();
 
-        duration.setLicensePlate("ABC123");
+        duration.setLicensePlate("AA-ZK-BL");
         duration.setStreetName("Java");
         duration.setStartTime(LocalDateTime.of(2024, 7, 18, 14, 0));
         duration.setEndTime(null);
         when(parkingDurationRepository.save(any(ParkingDuration.class))).thenReturn(duration);
-        when(parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("ABC123")).thenReturn(Optional.of(duration));
-        when(streetPricingRepository.findByStreetName("ABC123")).thenReturn(Optional.empty());
-        assertThrows(IllegalStateException.class, ()->parkingService.endParking("ABC123"));
+        when(parkingDurationRepository.findByLicensePlateAndEndTimeIsNull("AA-ZK-BL")).thenReturn(Optional.of(duration));
+        when(streetPricingRepository.findByStreetName("AA-ZK-BL")).thenReturn(Optional.empty());
+        assertThrows(IllegalStateException.class, ()->parkingService.endParking("AA-ZK-BL"));
     }
 
     @Test

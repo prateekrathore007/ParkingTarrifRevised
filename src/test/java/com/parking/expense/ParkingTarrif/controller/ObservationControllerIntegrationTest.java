@@ -25,13 +25,13 @@ public class ObservationControllerIntegrationTest {
 
     @Test
     void testAddObservations() throws Exception {
-        String observationsJson = "[{\"licensePlate\":\"ABC123\",\"streetName\":\"Java\",\"dateOfObservation\":\"2024-07-18\"}]";
+        String observationsJson = "[{\"licensePlate\":\"BC-ZK-BL\",\"streetName\":\"Java\",\"dateOfObservation\":\"2024-07-18\"}]";
 
         mockMvc.perform(post("/api/list/observations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(observationsJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].licensePlate").value("ABC123"))
+                .andExpect(jsonPath("$[0].licensePlate").value("BC-ZK-BL"))
                 .andExpect(jsonPath("$[0].streetName").value("Java"))
                 .andExpect(jsonPath("$[0].dateOfObservation").value("2024-07-18"));
     }
