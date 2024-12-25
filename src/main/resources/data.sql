@@ -8,3 +8,10 @@ insert into STREET_PRICING(street_name, street_pricing) values ('Java',15);
 insert into STREET_PRICING(street_name, street_pricing) values ('Jakarta',13);
 insert into STREET_PRICING(street_name, street_pricing) values ('Spring',12);
 insert into STREET_PRICING(street_name, street_pricing) values ('Azure',10);
+--DELIVERY_DATE
+
+insert into supply_assignment_a(QUANTITY, NAME) values (10, 'SWOOSH');
+
+insert into supply_assignment_b(QUANTITY, NAME) values (20, 'JWOOSH');
+
+insert into supply_assignment_status(active_table) values('ProductA');

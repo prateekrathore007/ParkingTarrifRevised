@@ -13,8 +13,4 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<String> handleException(Exception ex){
-        return  new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
 }
